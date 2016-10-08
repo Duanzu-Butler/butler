@@ -22,6 +22,10 @@
     </div>
 
     <loading :show="show" :text="loadingText" class="loadingClass"></loading>
+
+    <alert :show.sync="alertshow" title="维护平台房源" button-text="关 闭">
+      <p style="text-align:center;">{{alertText}}</p>
+    </alert>
   </div>
 </template>
 
@@ -69,6 +73,7 @@
   import TimelineItem from 'vux/dist/components/timeline-item'
   import button from 'vux/dist/components/x-button'
   import loading from 'vux/dist/components/loading'
+  import alert from 'vux/dist/components/alert'
 
   export default{
     data(){
@@ -80,14 +85,17 @@
         apiUpdateUrl: '/butler-api/user/platform/get',
         apiDeleteUrl: '/butler-api/user/platform/delete',
         show: false,
-        loadingText: '加载中...'
+        loadingText: '加载中...',
+        alertshow: false,
+        alertText : '',
       }
     },
     components: {
       Timeline,
       TimelineItem,
       button,
-      loading
+      loading,
+      alert
     },
     methods: {
       freshPlantformData: function (plantformId) {
@@ -101,7 +109,8 @@
                 //API返回成功编号200
                 //更新指定平台的房源列表和平台名称
                 this.houseData.every(function (entry, entryIndex) {
-                  if (entry.plantformId == returnData.result.plantformId) {
+                  if (entry.platformId == returnData.result.platformId) {
+                    debugger;
                     entry.plantformName = returnData.result.plantformName;
                     entry.houseList = returnData.result.houseList;
 
@@ -109,22 +118,30 @@
                     return false;
                   }
                 });
+
+                this.alertText = '平台房源更新成功！';
+                this.alertshow = true;
               }
               else {
                 //API返回失败编号 - 除了200之外
                 console.log(returnData.desc);
-
+                this.alertText = returnData.desc;
+                this.alertshow = true;
               }
               this.show = false;
             }, function (response) {
               //请求失败
               this.show = false;
+              this.alertText = '服务器请求失败，请稍后再试！';
+              this.alertshow = true;
             }
           )
           .catch(function (response) {
             //当请求出现异常，打印出对应的错误信息
             console.log(response);
             this.show = false;
+            this.alertText =  '服务器请求失败，请稍后再试！';;
+            this.alertshow = true;
           });
 
       },
@@ -139,8 +156,8 @@
             if (returnData.status == 200) {
               //API返回成功编号200, 从页面数据中删除指定data
               this.houseData.every(function (entry, entryIndex) {
-                debugger;
-                if (entry.plantformId == vm.selectedPlantformId) {
+                if (entry.platformId == vm.selectedPlantformId) {
+                  debugger;
                   //delete vm.houseData[entryIndex];
                   vm.houseData.splice(entryIndex, 1);
                   //return current each scope
@@ -148,20 +165,28 @@
                 }
               });
               this.houseData = vm.houseData;
+              this.alertText = '退出平台成功！';
+              this.alertshow = true;
             }
             else {
               //API返回失败编号 - 除了200之外
               console.log(returnData.desc);
+              this.alertText = returnData.desc;
+              this.alertshow = true;
             }
             this.show = false;
           }, function (response) {
             //请求失败
             this.show = false;
+            this.alertText =  '服务器请求失败，请稍后再试！';;
+            this.alertshow = true;
           })
           .catch(function (response) {
             //当请求出现异常，打印出对应的错误信息
             console.log(response);
             this.show = false;
+            this.alertText =  '服务器请求失败，请稍后再试！';;
+            this.alertshow = true;
           });
       },
       joinPlantform: function () {

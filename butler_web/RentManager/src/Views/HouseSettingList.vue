@@ -7,7 +7,7 @@
         </div>
         <div class="buttonArea">
           <button type="default" :class="[houseNum === 0 ? 'btnHideClass' : 'btnShowClass']"
-                  @click="setHourseStatus(item.houseList[houseNum-1].houseId, item.houseList[houseNum-1].houseName)">设置房态
+                  @click="setHourseStatus(item.platformId,item.houseList[houseNum-1].houseId, item.houseList[houseNum-1].houseName)">设置房态
           </button>
         </div>
       </timeline-item>
@@ -84,10 +84,11 @@
       loading
     },
     methods: {
-      setHourseStatus: function (houseId, houseName) {
+      setHourseStatus: function (plantformId, houseId, houseName) {
         window.router.go({
           name: 'HouseSetting',
           query: {
+              plantformId: plantformId,
               houseId: houseId,
               houseName: houseName
           }
