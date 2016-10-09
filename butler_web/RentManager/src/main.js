@@ -57,4 +57,5 @@ new Vue({
 })
 
 //注册vue-resource请求可以跨域访问
-Vue.http.headers.common['Access-Control-Allow-Origin'] = 'http://duanzugj.com:8080/';
+// Vue.http.headers.common['Access-Control-Allow-Origin'] = 'http://duanzugj.com:8080/';
+Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';

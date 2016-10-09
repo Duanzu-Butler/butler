@@ -57,6 +57,7 @@
       return {
         plantFormData: [],
         apiUrl: '/butler-api/platform/get',
+        //apiUrl: 'http://103.219.193.47:8080/butler-api/platform/get',
         show: false,
         loadingText : '加载中...'
       }
