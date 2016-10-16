@@ -25,7 +25,8 @@ module.exports = {
     //proxyTable: {},
     proxyTable: {
       '/butler-api': {
-        target: 'http://103.219.193.47:8080/butler-api',
+        //target: 'http://103.219.193.47:8080/butler-api',
+        target: 'http://115.159.196.175/butler-api',
         changeOrigin: true,
         pathRewrite: {
           '^/butler-api': ''

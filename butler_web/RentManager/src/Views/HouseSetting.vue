@@ -42,7 +42,9 @@
     color: rgb(4, 190, 2);
   }
 </style>
+
 <script>
+
   import calendar from 'vux/dist/components/calendar'
   import xnumber from 'vux/dist/components/x-number'
   import loading from 'vux/dist/components/loading'
@@ -85,6 +87,13 @@
       this.houseId = getQueryStringByName("houseId");
       this.houseName = getQueryStringByName("houseName");
       this.selectedPlantformId = getQueryStringByName("plantformId");
+
+      //get useropenid from store state
+      var gettedOpenId = window.store.state.useOpenId;
+      if(gettedOpenId != '')
+      {
+        this.userOpenId = gettedOpenId;
+      }
     },
     methods: {
       updateHouseStatus : function () {

@@ -52,9 +52,9 @@
         alertText : '',
         loadingText: '加载中...',
         userOpenId: 'wx001',
-        apiGetPlatformUrl: 'butler-api/platform/get',
-        apiTestUrl: 'butler-api/user/platform/test',
-        apiJoinUrl: 'butler-api/user/platform/create'
+        apiGetPlatformUrl: '/butler-api/platform/get',
+        apiTestUrl: '/butler-api/user/platform/test',
+        apiJoinUrl: '/butler-api/user/platform/create'
       }
     },
     components: {
@@ -87,6 +87,7 @@
               this.show = false;
             }, function (response) {
               //请求失败
+            debugger;
               this.show = false;
             this.alertText = response.desc;
             this.alertshow = true;
@@ -113,7 +114,7 @@
               }
               else {
                 //API返回失败编号 - 除了200之外
-                this.alertText = response.desc;
+                this.alertText = returnData.desc;
                 this.alertshow = true;
               }
               this.show = false;
@@ -121,7 +122,7 @@
               //请求失败
               this.show = false;
 
-            this.alertText = response.desc;
+            this.alertText = response.data.desc;
             this.alertshow = true;
             }
           )
@@ -134,10 +135,19 @@
       }
     },
     ready: function () {
+      //get useropenid from store state
+      debugger;
+      var gettedOpenId = window.store.state.useOpenId;
+      if(gettedOpenId != '')
+      {
+        this.userOpenId = gettedOpenId;
+      }
+
       this.show = true;
       var tpPlantformList = this.plantformList;
       this.$http.get(this.apiGetPlatformUrl)
         .then(function (response) {
+          debugger;
             var returnData = response.data;
             if (returnData.status == 200) {
               //API返回成功编号200

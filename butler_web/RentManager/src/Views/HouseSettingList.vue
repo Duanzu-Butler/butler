@@ -6,7 +6,9 @@
           {{ houseNum ==0 ? item.platformName : item.houseList[houseNum-1].houseName}}
         </div>
         <div class="buttonArea">
-          <button type="default" :class="[houseNum === 0 ? 'btnHideClass' : 'btnShowClass']"
+          <button type="primary" :class="[houseNum === 0 ? 'btnHideClass' : 'btnShowClass']"
+                  @click="showHouseCalendar(item.platformId,item.houseList[houseNum-1].houseId, item.houseList[houseNum-1].houseName)">查看房态</button>
+          <button type="primary" :class="[houseNum === 0 ? 'btnHideClass' : 'btnShowClass']"
                   @click="setHourseStatus(item.platformId,item.houseList[houseNum-1].houseId, item.houseList[houseNum-1].houseName)">设置房态
           </button>
         </div>
@@ -88,15 +90,39 @@
         window.router.go({
           name: 'HouseSetting',
           query: {
-              plantformId: plantformId,
-              houseId: houseId,
-              houseName: houseName
+            plantformId: plantformId,
+            houseId: houseId,
+            houseName: houseName
           }
 
+        });
+      },
+      showHouseCalendar: function (plantformId, houseId, houseName) {
+        window.router.go({
+          name: 'HouseCalendar',
+          query: {
+            plantformId: plantformId,
+            houseId: houseId,
+            houseName: houseName
+          }
         });
       }
     },
     ready: function () {
+      //从请求的url中获取微信userOpenId - after deploy to weixin, will use following code
+//      var gettedOpenId = getQueryStringByName("userOpenId");
+//      if(gettedOpenId != '')
+//      {
+//        this.userOpenId = gettedOpenId;
+//      }
+
+      //get useropenid from store state
+      var gettedOpenId = window.store.state.useOpenId;
+      if(gettedOpenId != '')
+      {
+        this.userOpenId = gettedOpenId;
+      }
+
       this.show = true;
       var getAllUrl = this.apiUrl + '?userOpenId=' + this.userOpenId;
       this.$http.get(getAllUrl)
@@ -124,6 +150,14 @@
           this.show = false;
         });
     }
+  }
+
+  function getQueryStringByName(name){
+    var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
+    if(result == null || result.length < 1){
+      return "";
+    }
+    return decodeURI(result[1]);
   }
 </script>
 

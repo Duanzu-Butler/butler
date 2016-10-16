@@ -88,6 +88,7 @@
         loadingText: '加载中...',
         alertshow: false,
         alertText : '',
+        houseName: ''
       }
     },
     components: {
@@ -110,7 +111,6 @@
                 //更新指定平台的房源列表和平台名称
                 this.houseData.every(function (entry, entryIndex) {
                   if (entry.platformId == returnData.result.platformId) {
-                    debugger;
                     entry.plantformName = returnData.result.plantformName;
                     entry.houseList = returnData.result.houseList;
 
@@ -196,6 +196,20 @@
       }
     },
     ready: function () {
+      //从请求的url中获取微信userOpenId - after deploy to weixin, will use following code
+//      var gettedOpenId = getQueryStringByName("userOpenId");
+//      if(gettedOpenId != '')
+//      {
+//        this.userOpenId = gettedOpenId;
+//      }
+
+      //get useropenid from store state
+      var gettedOpenId = window.store.state.useOpenId;
+      if(gettedOpenId != '')
+      {
+        this.userOpenId = gettedOpenId;
+      }
+
       this.show = true;
       var getAllUrl = this.apiUrl + '?userOpenId=' + this.userOpenId;
       this.$http.get(getAllUrl)
@@ -223,5 +237,13 @@
           this.show = false;
         });
     }
+  }
+
+  function getQueryStringByName(name){
+    var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
+    if(result == null || result.length < 1){
+      return "";
+    }
+    return decodeURI(result[1]);
   }
 </script>
