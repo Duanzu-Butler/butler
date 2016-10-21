@@ -1,17 +1,17 @@
 <template>
   <div id="wrapper">
-    <div class="header">
-    <xheader :left-options="{showBack: false}">短租管家助手</xheader>
-      </div>
+    <!--<div class="header">-->
+    <!--<xheader :left-options="{showBack: false}">短租管家助手</xheader>-->
+      <!--</div>-->
 
     <router-view>
     </router-view>
 
-    <div class="footer">
-      <tab>
-        <tabitem :selected="selectedTab === item" v-for="item in tabList" @click="selectTab(item)">{{ item }}</tabitem>
-      </tab>
-    </div>
+    <!--<div class="footer">-->
+      <!--<tab>-->
+        <!--<tabitem :selected="selectedTab === item" v-for="item in tabList" @click="selectTab(item)">{{ item }}</tabitem>-->
+      <!--</tab>-->
+    <!--</div>-->
   </div>
 </template>
 
@@ -53,7 +53,37 @@
           });
         }
       }
+    },
+    ready: function () {
+       //类似于微信的中转页面，用于决定往哪个页面去跳转
+      var forwardUrl = getQueryStringByName('forward');
+      var userOpenId = getQueryStringByName('userOpenId');
+
+      if(forwardUrl == 'houselist'){
+        window.router.go({
+          name: 'HouseList',
+          query: {
+            userOpenId: userOpenId
+          }
+        });
+      }
+      else if (forwardUrl === 'housesettinglist') {
+        window.router.go({
+          name: 'HouseSettingList',
+          query: {
+            userOpenId: userOpenId
+          }
+        });
+      }
     }
+  }
+
+  function getQueryStringByName(name){
+    var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
+    if(result == null || result.length < 1){
+      return "";
+    }
+    return decodeURI(result[1]);
   }
 
 </script>

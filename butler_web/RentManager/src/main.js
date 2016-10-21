@@ -31,8 +31,10 @@ router.map({
   '/rentmanager/': {name:'Help', component: Help},
   '/rentmanager/Help': {name:'Help', component: Help},
   '/rentmanager/houselist': {name:'HouseList', component: HouseList},
+  //'rentmanager?forward=houselist': {name:'HouseList', component: HouseList},
   '/rentmanager/addplantform': {name:'AddPlantform', component: AddPlantform},
   '/rentmanager/housesettinglist': {name:'HouseSettingList', component: HouseSettingList},
+  //'rentmanager?forward=housesettinglist': {name:'HouseSettingList', component: HouseSettingList},
   '/rentmanager/housesetting': {name:'HouseSetting', component: HouseSetting},
   '/rentmanager/housecalendar': {name: 'HouseCalendar', component: HouseCalendar}
 });
@@ -67,6 +69,17 @@ new Vue({
 // Vue.http.headers.common['Access-Control-Allow-Origin'] = 'http://duanzugj.com:8080/';
 Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
 
+
+
+
+function getQueryStringByName(name){
+  var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
+  if(result == null || result.length < 1){
+    return "";
+  }
+  return decodeURI(result[1]);
+}
+
 //创建一个对象来保存应用启动时的初始状态
 const store = new Vuex.Store({
   state: {
@@ -81,15 +94,8 @@ const store = new Vuex.Store({
 
 window.store = store;
 
-
-function getQueryStringByName(name){
-  var result = location.search.match(new RegExp("[\?\&]" + name+ "=([^\&]+)","i"));
-  if(result == null || result.length < 1){
-    return "";
-  }
-  return decodeURI(result[1]);
-}
-
 window.store.commit('setOpenId', getQueryStringByName("userOpenId"));
+
+
 
 

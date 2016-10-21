@@ -65,7 +65,7 @@
         status: '',
         houseStatusList: [{key: '1', value: '可租'}, {key: '0', value: '不可租'}],
         houseStatus: '',
-        updateApiUrl: 'butler-api/user/platform/house/update',
+        updateApiUrl: '/butler-api/user/platform/house/update',
         alertshow: false,
         alertText : '',
         show: false,
@@ -88,6 +88,12 @@
       this.houseName = getQueryStringByName("houseName");
       this.selectedPlantformId = getQueryStringByName("plantformId");
 
+      this.startDate = getQueryStringByName("queryDate");
+      this.endDate = getQueryStringByName("queryDate");
+      this.roomNum = Number(getQueryStringByName("rommNum"));
+      this.price = Number(getQueryStringByName("price"));
+      this.houseStatus = getQueryStringByName("status");
+
       //get useropenid from store state
       var gettedOpenId = window.store.state.useOpenId;
       if(gettedOpenId != '')
@@ -106,8 +112,16 @@
           .then(function (response) {
               var returnData = response.data;
               if (returnData.status == 200) {
-                this.alertText = '房源房态设置成功！';
-                this.alertshow = true;
+//                this.alertText = '房源房态设置成功！';
+//                this.alertshow = true;
+                window.router.go({
+                  name: 'HouseCalendar',
+                  query: {
+                    plantformId: this.selectedPlantformId,
+                    houseId: this.houseId,
+                    houseName: this.houseName
+                  }
+                });
               }
               else {
                 //API返回失败编号 - 除了200之外

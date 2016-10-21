@@ -110,18 +110,18 @@
     },
     ready: function () {
       //从请求的url中获取微信userOpenId - after deploy to weixin, will use following code
-//      var gettedOpenId = getQueryStringByName("userOpenId");
-//      if(gettedOpenId != '')
-//      {
-//        this.userOpenId = gettedOpenId;
-//      }
-
-      //get useropenid from store state
-      var gettedOpenId = window.store.state.useOpenId;
+      var gettedOpenId = getQueryStringByName("userOpenId");
       if(gettedOpenId != '')
       {
         this.userOpenId = gettedOpenId;
       }
+
+      //get useropenid from store state
+//      var gettedOpenId = window.store.state.useOpenId;
+//      if(gettedOpenId != '')
+//      {
+//        this.userOpenId = gettedOpenId;
+//      }
 
       this.show = true;
       var getAllUrl = this.apiUrl + '?userOpenId=' + this.userOpenId;
